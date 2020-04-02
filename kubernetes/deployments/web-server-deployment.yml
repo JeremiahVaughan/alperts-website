@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-server-deployment
+  labels:
+    name: web-server-deployment
+    app: professional-website
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: web-server-pod
+      app: professional-website
+  template:
+    metadata:
+      labels:
+        name: web-server-pod
+        app: professional-website
+    spec:
+      containers:
+        - name: web-server
+          image: wordpress
+          env:
+            - name: WORDPRESS_DB_HOST
+              value: database-service
+            - name: WORDPRESS_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: db-username
+            - name: WORDPRESS_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: db-user-password
+            - name: WORDPRESS_DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: db-name
+          volumeMounts:
+            - name: wordpress-storage
+              mountPath: /var/www/html
+          ports:
+            - containerPort: 80
+      volumes:
+        - name: wordpress-storage
+          emptyDir: {}

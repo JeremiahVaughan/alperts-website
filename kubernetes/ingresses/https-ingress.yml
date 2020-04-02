@@ -1,0 +1,11 @@
+apiVersion: networking.k8s.io/v1beta1ass
+kind: Ingress
+metadata:
+  name: https-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "k8s-fw-default-https-ingress--c4cd39a7e970a977"
+    networking.gke.io/managed-certificates: professional-website-certificate
+spec:
+  backend:
+    serviceName: professional-website-web-server-service
+    servicePort: 80

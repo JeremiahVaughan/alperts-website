@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: professional-website-web-server-service
+  labels:
+    name: professional-website-web-server-service
+    app: professional-website
+spec:
+  type: NodePort
+  selector:
+    name: web-server-pod
+    app: professional-website
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+
+
